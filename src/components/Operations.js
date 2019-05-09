@@ -5,12 +5,9 @@ class Operations extends Component {
 
     render() {
         return (
-             <div className="operations">
-             <div>
-                 OPERATIONS
-             </div>
-                {this.props.operations.map(o => <Operation operation={o}/>)}
-             </div>
+            <div className="operations">
+                {this.props.operations.map(o => <Operation operation={o} />)}
+            </div>
         )
     }
 }

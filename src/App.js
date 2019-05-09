@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 import './App.css';
 import Budget from './components/Budget';
 import InputComponent from './components/InputComponent';
 import Operations from './components/Operations';
 import Transactions from './components/Transactions';
+import 'materialize-css/dist/css/materialize.min.css';
 
 const axios = require('axios')
 
@@ -73,22 +75,37 @@ class App extends Component {
     let unique = [...new Set(arr)]
     return unique
   }
-  render() {
+  renderContainer = () => {
     return (
-      <div className="App">
-        <button onClick={this.changeShowFlag}>Decide what to show</button>
+      <div class="col s9">
+        <ul id="tabs-swipe-demo" class="tabs">
+          <li class="tab col s6"><Link to="/">Transactions</Link></li>
+          <li class="tab col s6"><Link to="/operations">Operations</Link></li>
+        </ul>
+        <Route exact path="/" render={() => <Transactions transactions={this.state.transactions} />} />
+        <Route exact path="/operations" render={() => <Operations operations={this.state.operations} />} />
+      </div>
+    )
+  }
+  renderInputAndBudget = () => {
+    return (
+      <div class="col s3">
         <Budget amount={this.calculateBugget()} />
         <InputComponent withdraw={this.withdraw} deposit={this.deposit} categories={this.getCategories()} />
-
-        {this.state.showTransactions ? 
-        <Operations operations={this.state.operations} /> 
-        : 
-        <Transactions transactions={this.state.transactions} />}
-        
-        {/* <Operations operations={this.state.operations} />
-        <hr></hr>
-        <Transactions transactions={this.state.transactions} /> */}
       </div>
+    )
+
+  }
+  render() {
+    return (
+      <Router>
+        <div className="App">
+          <div class="row s12">
+            {this.renderInputAndBudget()}
+            {this.renderContainer()}
+          </div>
+        </div>
+      </Router>
     );
   }
 }

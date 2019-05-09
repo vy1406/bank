@@ -7,8 +7,8 @@ class InputComponent extends Component {
             vendor: "",
             amount: 0,
             category: "",
-            isOperationsDisabled: true,
-            isAddCategoryDisabled: true,
+            isOperationsDisabled: false,
+            isAddCategoryDisabled: false,
             isChooseCategoryDisabled: true
         }
     }
@@ -38,7 +38,7 @@ class InputComponent extends Component {
                 isChooseCategoryDisabled: false,
                 isAddCategoryDisabled: true
             })
-        else if ( event.target.value === "new" )
+        else if (event.target.value === "new")
             this.setState({
                 isChooseCategoryDisabled: true,
                 isAddCategoryDisabled: false
@@ -63,20 +63,35 @@ class InputComponent extends Component {
 
     render() {
         return (
-            <div className="menu">
-                <input type="number" name="amount" id="amount-input" onChange={this.handleChange} placeholder="Input Amount" />
-                <input type="text" name="vendor" id="vendor-input" onChange={this.handleChange} placeholder="Input Vendor" />
-                <div onChange={this.createOrChooseCategory} >
+            <div className="col s12">
+                <div class="">
+                    <div class="row">
+                        <input type="number" name="amount" id="amount-input" onChange={this.handleChange} placeholder="Input Amount" />
+                        <input type="text" name="vendor" id="vendor-input" onChange={this.handleChange} placeholder="Input Vendor" />
+                        {/* <div onChange={this.createOrChooseCategory} >
                     <input type="radio" value="new" name="category-type" />New Category
                     <input type="radio" value="selected" name="category-type" />Select Existing
-                </div>
-                <input type="text" name="category" id="vendor-input" onChange={this.handleChange} placeholder="Input New Category" disabled={this.state.isAddCategoryDisabled ? true : false} />
+                </div> */}
+                        <input type="text" name="category" id="vendor-input" onChange={this.handleChange} placeholder="Input New Category" disabled={this.state.isAddCategoryDisabled ? true : false} />
 
-                <select id="category" name="category" onChange={this.handleChange}  disabled={this.state.isChooseCategoryDisabled ? true : false}>
+                        {/* <select id="category" name="category" onChange={this.handleChange} disabled={this.state.isChooseCategoryDisabled ? true : false}>
                     {this.createSelectItems()}
-                </select>
-                <button onClick={this.withdraw} disabled={this.state.isOperationsDisabled ? true : false}>Withdraw</button>
-                <button onClick={this.deposit} disabled={this.state.isOperationsDisabled ? true : false}>Deposit</button>
+                </select> */}
+
+                    </div>
+                    <div class="row">
+                        <div class="col s6 m6">
+                            <div class="col-content">
+                                <a class="waves-effect waves-light btn" onClick={this.withdraw} disabled={this.state.isOperationsDisabled ? true : false}>Withdraw</a>
+                            </div>
+                        </div>
+                        <div class="col s6 m6">
+                            <div class="col-content">
+                                <a class="waves-effect waves-light btn" onClick={this.deposit} disabled={this.state.isOperationsDisabled ? true : false}>Deposit</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         )
     }
