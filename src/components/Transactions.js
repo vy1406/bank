@@ -6,7 +6,19 @@ class Transactions extends Component {
     render() {
         return (
             <div className="transactions">
-                {this.props.transactions.map(t => <Transaction transaction={t} />)}
+                <table class="highlight centered responsive-table">
+                    <thead>
+                        <tr>
+                            <th>Amount</th>
+                            <th>Vendor</th>
+                            <th>Category</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {this.props.transactions.map(t => <Transaction transaction={t} />)}
+                    </tbody>
+
+                </table>
             </div>
         )
     }

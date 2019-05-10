@@ -4,11 +4,11 @@ class Transaction extends Component {
 
     render() {
         return (
-            <div className="transaction">
-                <div class="card">
-                    <span>{this.props.transaction.amount} / </span> <span>{this.props.transaction.vendor}</span> / <span>{this.props.transaction.category}</span>
-                </div>
-            </div>
+            <tr>
+                <td>{this.props.transaction.amount} </td>
+                <td>{this.props.transaction.vendor}</td>
+                <td>{this.props.transaction.category}</td>
+            </tr>
         )
     }
 }
