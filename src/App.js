@@ -31,16 +31,18 @@ class App extends Component {
   }
 
   withdraw = async (amount, vendor, category) => {
-    console.log(amount, vendor, category)
+    await this.saveTransaction({ amount: -amount, vendor, category })
   }
 
   deposit = async (amount, vendor, category) => {
-    let params = {
-      amount, vendor, category
-    }
+    await this.saveTransaction({ amount, vendor, category })
+  }
+  
+  saveTransaction = async params => {
     await axios.post("http://localhost:8080/transaction", params)
     await this.reloadTransactions()
   }
+
 
   async reloadTransactions() {
     const transactions = await this.getTransactions()
@@ -91,26 +93,26 @@ class App extends Component {
       </div>
     )
   }
+
   getArrayOfCategoryAndAmount = () => {
     let categories = this.getCategories()
     let arrData = []
     arrData.push(['Category Name', 'Amount'])
-    for ( let category of categories ){
-        let curSumAmount = 0
-        this.state.transactions.filter(T => T.category === category)
-                                .forEach(T => curSumAmount += T.amount)
+    for (let category of categories) {
+      let curSumAmount = 0
+      this.state.transactions.filter(T => (T.category === category) && (T.amount > 0))
+        .forEach(T => curSumAmount += T.amount)
 
-        let categoryAndAmount = [
-          category,
-          curSumAmount
-        ]
-        arrData.push(categoryAndAmount)
+      let categoryAndAmount = [
+        category,
+        curSumAmount
+      ]
+      arrData.push(categoryAndAmount)
     }
     return arrData
   }
+
   renderPieChart = () => {
-    
-        
     return (
       <Chart className="chart"
         width={'100%'}
@@ -127,6 +129,7 @@ class App extends Component {
       />
     )
   }
+
   renderInputBudgetChart = () => {
     return (
       <div class="col s3">
@@ -135,8 +138,8 @@ class App extends Component {
         <InputComponent withdraw={this.withdraw} deposit={this.deposit} categories={this.getCategories()} />
       </div>
     )
-
   }
+
   render() {
     return (
       <Router>
