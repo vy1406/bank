@@ -20,7 +20,9 @@ class DB_util {
             { amount: 3200, vendor: "Elevation", category: "Salary" },
             { amount: -7, vendor: "Runescape", category: "Entertainment" },
             { amount: -20, vendor: "Subway", category: "Food" },
-            { amount: -98, vendor: "La Baguetterie", category: "Food" }
+            { amount: -98, vendor: "La Baguetterie", category: "Food" },
+            { amount: 5000, vendor: "Uncle Tom", category: "Oil" },
+            { amount: 190, vendor: "Pikachu", category: "Black market" },
         ]
 
         for (let R of result) {

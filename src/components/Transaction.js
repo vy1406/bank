@@ -3,20 +3,6 @@ import Popup from 'reactjs-popup';
 
 class Transaction extends Component {
 
-    showByCategory = () => {
-        console.log(this.props.transaction.category)
-        return (
-            <div id="modal1" class="modal">
-                <div class="modal-content">
-                    <h4>Modal Header</h4>
-                    <p>A bunch of text</p>
-                </div>
-                <div class="modal-footer">
-                    <a href="#!" class="modal-close waves-effect waves-green btn-flat">Agree</a>
-                </div>
-            </div>
-        )
-    }
     getListByCategories = () => {
         let arr = this.props.getListByCategories(this.props.transaction.category)
         return arr
@@ -46,12 +32,13 @@ class Transaction extends Component {
             </Popup>
         )
     }
+    checkIfDeposit = amount => amount > 0 ? "deposit" : "withdraw" 
+
     render() {
         return (
             <tr>
-                <td>{this.props.transaction.amount} </td>
+                <td className={this.checkIfDeposit(this.props.transaction.amount)}>{this.props.transaction.amount} </td>
                 <td>{this.props.transaction.vendor}</td>
-                {/* <td onMouseEnter={this.showByCategory}>{this.props.transaction.category}</td> */}
                 <td>{this.renderPopup()}</td>
             </tr>
         )

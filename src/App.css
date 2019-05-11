@@ -62,11 +62,18 @@ table {
 }
 
 .menu {
-  height:200px;
-  display:block;
+
+  display:inline-block;
   overflow:auto;
 }
 
 .chart > div > div > div {
   position:relative;
+}
+
+.deposit {
+  background-color: #04A777;
+}
+.withdraw  {
+  background-color: #FF6B6B;
 }

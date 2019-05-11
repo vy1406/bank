@@ -8,6 +8,7 @@ import Transactions from './components/Transactions';
 import 'materialize-css/dist/css/materialize.min.css';
 
 import Chart from 'react-google-charts';
+import BelowLimitPopup from './components/BelowLimitPopup';
 
 
 const axios = require('axios')
@@ -18,7 +19,8 @@ class App extends Component {
     this.state = {
       transactions: [],
       operations: [],
-      showTransactions: false
+      showTransactions: false,
+      showPopupWithdraw: false
     }
   }
 
@@ -31,18 +33,30 @@ class App extends Component {
   }
 
   withdraw = async (amount, vendor, category) => {
-    await this.saveTransaction({ amount: -amount, vendor, category })
+    if (this.calculateBugget() - amount < 500)
+      await this.showPopupCannotWithdraw()
+    else {
+      await this.saveTransaction({ amount: -amount, vendor, category })
+      await this.setState({
+        showPopupWithdraw: false
+      })
+    }
+
   }
 
   deposit = async (amount, vendor, category) => {
     await this.saveTransaction({ amount, vendor, category })
   }
-  
+  showPopupCannotWithdraw = async () => {
+    await this.setState({
+      showPopupWithdraw: true
+    })
+
+  }
   saveTransaction = async params => {
     await axios.post("http://localhost:8080/transaction", params)
     await this.reloadTransactions()
   }
-
 
   async reloadTransactions() {
     const transactions = await this.getTransactions()
@@ -63,7 +77,7 @@ class App extends Component {
 
   getTransactions = async () => {
     let arr = await axios.get("http://localhost:8080/transactions")
-    return arr.data
+    return arr.data.reverse()
   }
 
   getOperations = async () => {
@@ -129,13 +143,18 @@ class App extends Component {
       />
     )
   }
-
+  closeModal = () => {
+    this.setState({
+      showPopupWithdraw : false
+    })
+  }
   renderInputBudgetChart = () => {
     return (
       <div class="col s3">
         {this.renderPieChart()}
         <Budget amount={this.calculateBugget()} />
         <InputComponent withdraw={this.withdraw} deposit={this.deposit} categories={this.getCategories()} />
+        <BelowLimitPopup changeState={this.state.showPopupWithdraw} closeModal={this.closeModal}/>
       </div>
     )
   }

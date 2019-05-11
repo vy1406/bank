@@ -2,10 +2,6 @@ import React, { Component } from 'react';
 import Select from 'react-select';
 
 class SelectCategories extends Component {
-    constructor() {
-        super()
-
-    }
     getCategories = () => {
         let arr = []
         for (let i = 0; i < this.props.categories.length; i++)

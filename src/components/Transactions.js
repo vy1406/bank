@@ -12,6 +12,7 @@ class Transactions extends Component {
         arr = this.props.transactions.filter(T => T.category === category);
         return arr
     }
+ 
     render() {
         return (
             <table class="highlight centered responsive-table">
@@ -23,7 +24,7 @@ class Transactions extends Component {
                     </tr>
                 </thead>
                 <tbody>
-                    {this.props.transactions.reverse().map(t => <Transaction
+                    {this.props.transactions.map(t => <Transaction
                                                                  getListByCategories={this.getListByCategories}
                                                                  transaction={t} />)}
                 </tbody>
