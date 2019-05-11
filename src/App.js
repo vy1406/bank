@@ -7,6 +7,9 @@ import Operations from './components/Operations';
 import Transactions from './components/Transactions';
 import 'materialize-css/dist/css/materialize.min.css';
 
+import Chart from 'react-google-charts';
+
+
 const axios = require('axios')
 
 class App extends Component {
@@ -75,9 +78,11 @@ class App extends Component {
     let unique = [...new Set(arr)]
     return unique
   }
+
   renderContainer = () => {
     return (
       <div class="col s9">
+
         <ul id="tabs-swipe-demo" class="tabs">
           <li class="tab col s6"><Link to="/">Transactions</Link></li>
           <li class="tab col s6"><Link to="/operations">Operations</Link></li>
@@ -87,19 +92,47 @@ class App extends Component {
       </div>
     )
   }
+
+  renderPieChart = () => {
+    return (
+      <Chart className="chart"
+        width={'100%'}
+        height={'100%'}
+        chartType="PieChart"
+        loader={<div>Loading Chart</div>}
+        data={[
+          ['Task', 'Hours per Day'],
+          ['Work', 11],
+          ['Eat', 2],
+          ['Commute', 2],
+          ['Sleep', 7],
+          ['somehting', 8]
+        ]}
+        legendToggle={"false"}
+        options={{
+          title: 'Expenses by category',
+          legend: 'none',
+        }}
+        rootProps={{ 'data-testid': '1' }}
+      />
+    )
+  }
   renderInputAndBudget = () => {
     return (
       <div class="col s3">
+        {this.renderPieChart()}
         <Budget amount={this.calculateBugget()} />
         <InputComponent withdraw={this.withdraw} deposit={this.deposit} categories={this.getCategories()} />
+        {/* <PieChart /> */}
       </div>
+
     )
 
   }
   render() {
     return (
       <Router>
-        <div className="App">
+        <div className="container">
           <div class="row s12">
             {this.renderInputAndBudget()}
             {this.renderContainer()}

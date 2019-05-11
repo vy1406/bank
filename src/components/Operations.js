@@ -5,7 +5,6 @@ class Operations extends Component {
 
     render() {
         return (
-            <div className="operations">
                 <table class="highlight centered responsive-table">
                     <thead>
                         <tr>
@@ -15,10 +14,9 @@ class Operations extends Component {
                         </tr>
                     </thead>
                     <tbody>
-                        {this.props.operations.map(o => <Operation operation={o} />)}
+                        {this.props.operations.reverse().map(o => <Operation operation={o} />)}
                     </tbody>
                 </table>
-            </div>
         )
     }
 }

@@ -64,7 +64,7 @@ class InputComponent extends Component {
     render() {
         return (
             <div className="col s12">
-                <div class="">
+                <div className="inputForm">
                     <div class="row">
                         <input type="number" name="amount" id="amount-input" onChange={this.handleChange} placeholder="Input Amount" />
                         <input type="text" name="vendor" id="vendor-input" onChange={this.handleChange} placeholder="Input Vendor" />
