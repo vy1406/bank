@@ -82,7 +82,6 @@ class App extends Component {
   renderContainer = () => {
     return (
       <div class="col s9">
-
         <ul id="tabs-swipe-demo" class="tabs">
           <li class="tab col s6"><Link to="/">Transactions</Link></li>
           <li class="tab col s6"><Link to="/operations">Operations</Link></li>
@@ -92,22 +91,33 @@ class App extends Component {
       </div>
     )
   }
+  getArrayOfCategoryAndAmount = () => {
+    let categories = this.getCategories()
+    let arrData = []
+    arrData.push(['Category Name', 'Amount'])
+    for ( let category of categories ){
+        let curSumAmount = 0
+        this.state.transactions.filter(T => T.category === category)
+                                .forEach(T => curSumAmount += T.amount)
 
+        let categoryAndAmount = [
+          category,
+          curSumAmount
+        ]
+        arrData.push(categoryAndAmount)
+    }
+    return arrData
+  }
   renderPieChart = () => {
+    
+        
     return (
       <Chart className="chart"
         width={'100%'}
         height={'100%'}
         chartType="PieChart"
         loader={<div>Loading Chart</div>}
-        data={[
-          ['Task', 'Hours per Day'],
-          ['Work', 11],
-          ['Eat', 2],
-          ['Commute', 2],
-          ['Sleep', 7],
-          ['somehting', 8]
-        ]}
+        data={this.getArrayOfCategoryAndAmount()}
         legendToggle={"false"}
         options={{
           title: 'Expenses by category',
@@ -117,15 +127,13 @@ class App extends Component {
       />
     )
   }
-  renderInputAndBudget = () => {
+  renderInputBudgetChart = () => {
     return (
       <div class="col s3">
         {this.renderPieChart()}
         <Budget amount={this.calculateBugget()} />
         <InputComponent withdraw={this.withdraw} deposit={this.deposit} categories={this.getCategories()} />
-        {/* <PieChart /> */}
       </div>
-
     )
 
   }
@@ -134,7 +142,7 @@ class App extends Component {
       <Router>
         <div className="container">
           <div class="row s12">
-            {this.renderInputAndBudget()}
+            {this.renderInputBudgetChart()}
             {this.renderContainer()}
           </div>
         </div>

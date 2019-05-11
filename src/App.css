@@ -32,7 +32,6 @@
   }
 }
 
-
 tbody {
   font-family: 'Yeon Sung';
   display:block;
@@ -67,11 +66,6 @@ table {
   display:block;
   overflow:auto;
 }
-
-.chart2 {
-  
-}
-
 
 .chart > div > div > div {
   position:relative;

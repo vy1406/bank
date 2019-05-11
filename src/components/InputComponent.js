@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import RadioButton from './RadioButton';
+import SelectCategories from './SelectCategories';
 
 class InputComponent extends Component {
     constructor() {
@@ -7,9 +9,8 @@ class InputComponent extends Component {
             vendor: "",
             amount: 0,
             category: "",
-            isOperationsDisabled: false,
             isAddCategoryDisabled: false,
-            isChooseCategoryDisabled: true
+            isChooseCategoryDisabled: false
         }
     }
 
@@ -32,18 +33,7 @@ class InputComponent extends Component {
         this.checkIfToDisableOperations(event)
         this.setState({ [event.target.name]: event.target.value });
     }
-    createOrChooseCategory = (event) => {
-        if (event.target.value === "selected")
-            this.setState({
-                isChooseCategoryDisabled: false,
-                isAddCategoryDisabled: true
-            })
-        else if (event.target.value === "new")
-            this.setState({
-                isChooseCategoryDisabled: true,
-                isAddCategoryDisabled: false
-            })
-    }
+
     checkIfToDisableOperations = (event) => {
         if (!([event.target.name] === "category" && event.target.value === "-1"))
             this.setState({
@@ -52,15 +42,26 @@ class InputComponent extends Component {
     }
     createSelectItems = () => {
         let items = []
-        items.push(<option value="-1" selected disabled hidden>Choose category</option>)
-        for (let i = 0; i < this.props.categories.length; i++) {
-            let curCategory = this.props.categories[i]
-            let curOption = <option value={curCategory}>{curCategory}</option>
-            items.push(curOption)
-        }
+        for (let i = 0; i < this.props.categories.length; i++)
+            items.push(this.props.categories[i])
+
         return items
     }
+    AddCategoryOrChoose = isToChoose => { isToChoose ? this.chooseCategory() : this.addCategory() }
+    getSelectedCategory = category => { this.setState({ category }) }
 
+    chooseCategory = () => {
+        this.setState({
+            isChooseCategoryDisabled: false,
+            isAddCategoryDisabled: false
+        })
+    }
+    addCategory = () => {
+        this.setState({
+            isChooseCategoryDisabled: true,
+            isAddCategoryDisabled: true
+        })
+    }
     render() {
         return (
             <div className="col s12">
@@ -68,15 +69,8 @@ class InputComponent extends Component {
                     <div class="row">
                         <input type="number" name="amount" id="amount-input" onChange={this.handleChange} placeholder="Input Amount" />
                         <input type="text" name="vendor" id="vendor-input" onChange={this.handleChange} placeholder="Input Vendor" />
-                        {/* <div onChange={this.createOrChooseCategory} >
-                    <input type="radio" value="new" name="category-type" />New Category
-                    <input type="radio" value="selected" name="category-type" />Select Existing
-                </div> */}
-                        <input type="text" name="category" id="vendor-input" onChange={this.handleChange} placeholder="Input New Category" disabled={this.state.isAddCategoryDisabled ? true : false} />
 
-                        {/* <select id="category" name="category" onChange={this.handleChange} disabled={this.state.isChooseCategoryDisabled ? true : false}>
-                    {this.createSelectItems()}
-                </select> */}
+                        <input type="text" name="category" id="vendor-input" onChange={this.handleChange} placeholder="Input New Category" disabled={this.state.isAddCategoryDisabled ? false : true} />
 
                     </div>
                     <div class="row">
@@ -92,6 +86,12 @@ class InputComponent extends Component {
                         </div>
                     </div>
                 </div>
+                <RadioButton chooseCategory={this.AddCategoryOrChoose} />
+                <SelectCategories
+                    isDisabled={this.state.isChooseCategoryDisabled}
+                    categories={this.createSelectItems()}
+                    getSelectedCategory={this.getSelectedCategory}
+                />
             </div>
         )
     }
